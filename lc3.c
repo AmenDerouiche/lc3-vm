@@ -180,11 +180,18 @@ int main()
             uint16_t PCoffset = sign_extend(instr & 0x3f, 6);
             uint16_t address = reg[sourR] + PCoffset;
             reg[destiR] = memory[address];
-            update_flags(destiR); 
+            update_flags(destiR);
         }
         break;
         case OP_STR:
-            break;
+        {
+            uint16_t sourR = (instr >> 9) & 0x7;
+            uint16_t baseR = (instr >> 6) & 0x7;
+            uint16_t offset = sign_extend((instr & 0x3f), 6);
+            uint16_t address = offset + reg[baseR];
+            memory[address] = reg[sourR];
+        }
+        break;
         case OP_NOT:
         {
             uint16_t r0 = (instr >> 9) & 0x7;
