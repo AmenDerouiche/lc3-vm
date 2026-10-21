@@ -92,8 +92,16 @@ int main()
         switch (op)
         {
         case OP_BR:
+        {
+            uint16_t cond_flag = (instr >> 9) & 0x7;
+            uint16_t pc_offset = sign_extend((instr & 0x1ff), 9);
+            if ((reg[R_COND] & cond_flag) != 0)
+            {
+                reg[R_PC] += pc_offset;
+            }
+        }
 
-            break;
+        break;
         case OP_ADD:
         {
             uint16_t r0 = (instr >> 9) & 0x7;
