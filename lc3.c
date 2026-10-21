@@ -161,7 +161,11 @@ int main()
         case OP_LDI:
             break;
         case OP_JMP:
-            break;
+        {
+            uint16_t baseR = (instr >> 6) & 0x7;
+            reg[R_PC] = reg[baseR];
+        }
+        break;
         case OP_LEA:
             break;
         case OP_STI:
