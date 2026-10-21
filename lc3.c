@@ -126,7 +126,21 @@ int main()
         case OP_ST:
             break;
         case OP_JSR:
-            break;
+        {
+            reg[R_R7] = reg[R_PC];
+            uint16_t long_flag = (instr >> 11) & 0x1;
+            if (long_flag)
+            {
+                uint16_t PCoffset11 = sign_extend((instr) & 0x7ff, 11);
+                reg[R_PC] += PCoffset11;
+            }
+            else
+            {
+                uint16_t BaseR = (instr >> 6) & 0x7;
+                reg[R_PC] = reg[BaseR];
+            }
+        }
+        break;
         case OP_AND:
         {
             uint16_t r0 = (instr >> 9) & 0x7;
