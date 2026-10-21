@@ -95,6 +95,7 @@ int main()
 
             break;
         case OP_ADD:
+        {
             uint16_t r0 = (instr >> 9) & 0x7;
             uint16_t r1 = (instr >> 6) & 0x7;
             uint16_t imm_flag = (instr >> 5) & 0x1;
@@ -110,7 +111,8 @@ int main()
                 reg[r0] = reg[r1] + reg[r2];
             }
             update_flags(r0);
-            break;
+        }
+        break;
         case OP_LD:
             break;
         case OP_ST:
@@ -118,7 +120,24 @@ int main()
         case OP_JSR:
             break;
         case OP_AND:
-            break;
+        {
+            uint16_t r0 = (instr >> 9) & 0x7;
+            uint16_t r1 = (instr >> 6) & 0x7;
+            uint16_t imm_flag = (instr >> 5) & 0x1;
+            if (imm_flag == 1)
+            {
+                uint16_t imm5 = instr & 0x1f;
+                uint16_t value = sign_extend(imm5, 5);
+                reg[r0] = reg[r1] & value;
+            }
+            else
+            {
+                uint16_t r2 = instr & 0x7;
+                reg[r0] = reg[r1] & reg[r2];
+            }
+            update_flags(r0);
+        }
+        break;
         case OP_LDR:
             break;
         case OP_STR:
