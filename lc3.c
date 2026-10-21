@@ -131,7 +131,13 @@ int main()
         }
         break;
         case OP_ST:
-            break;
+        {
+            uint16_t r0 = (instr >> 9) & 0x7;
+            uint16_t PCoffset = sign_extend((instr & 0x1ff), 9);
+            uint16_t address = PCoffset + reg[R_PC];
+            memory[address] = reg[r0];
+        }
+        break;
         case OP_JSR:
         {
             reg[R_R7] = reg[R_PC];
