@@ -122,7 +122,14 @@ int main()
         }
         break;
         case OP_LD:
-            break;
+        {
+            uint16_t r0 = (instr >> 9) & 0x7;
+            uint16_t PCoffset = sign_extend((instr & 0x1ff), 9);
+            uint16_t address = reg[R_PC] + PCoffset;
+            reg[r0] = memory[address];
+            update_flags(r0);
+        }
+        break;
         case OP_ST:
             break;
         case OP_JSR:
