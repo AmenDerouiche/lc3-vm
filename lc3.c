@@ -209,7 +209,14 @@ int main()
         }
         break;
         case OP_LEA:
-            break;
+        {
+            uint16_t destiR = (instr >> 9) & 0x7;
+            uint16_t offset = sign_extend(instr & 0x1ff, 9);
+            uint16_t address = offset + reg[R_PC];
+            reg[destiR] = address;
+            update_flags(destiR);
+        }
+        break;
         case OP_STI:
             break;
         case OP_TRAP:
