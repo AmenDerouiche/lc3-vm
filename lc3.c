@@ -226,6 +226,13 @@ int main()
         }
         break;
         case OP_STI:
+        {
+            uint16_t sourR = (instr >> 9) & 0x7;
+            uint16_t PCoffset = sign_extend(instr & 0x1ff, 9);
+            uint16_t address = PCoffset + reg[R_PC];
+            uint16_t value = memory[address];
+            memory[value] = reg[sourR];
+        }
             break;
         case OP_TRAP:
             break;
