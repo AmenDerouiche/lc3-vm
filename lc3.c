@@ -201,7 +201,15 @@ int main()
         }
         break;
         case OP_LDI:
-            break;
+        {
+            uint16_t r0 = (instr >> 9) & 0x7;
+            uint16_t PCoffset = sign_extend(instr & 0x1ff, 9);
+            uint16_t address = reg[R_PC] + PCoffset;
+            uint16_t value = memory[address];
+            reg[r0] = memory[value];
+            update_flags(r0);
+        }
+        break;
         case OP_JMP:
         {
             uint16_t baseR = (instr >> 6) & 0x7;
