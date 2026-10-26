@@ -94,7 +94,6 @@ int main()
     reg[R_COND] = FL_ZRO;
     reg[R_PC] = PC_START;
     int running = 1;
-    memory[0x3000] = 0xF025;
     while (running)
     {
         uint16_t instr = memory[reg[R_PC]];
