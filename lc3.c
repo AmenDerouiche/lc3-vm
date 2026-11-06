@@ -94,6 +94,16 @@ int main()
     reg[R_COND] = FL_ZRO;
     reg[R_PC] = PC_START;
     int running = 1;
+    memory[0x3000] = 0x2006; /* LD R0, offset 6 → 'H' */
+    memory[0x3001] = 0xF021; /* OUT */
+    memory[0x3002] = 0x2005; /* LD R0, offset 5 → 'I' */
+    memory[0x3003] = 0xF021; /* OUT */
+    memory[0x3004] = 0x2004; /* LD R0, offset 4 → '\n' */
+    memory[0x3005] = 0xF021; /* OUT */
+    memory[0x3006] = 0xF025; /* HALT */
+    memory[0x3007] = 'H';
+    memory[0x3008] = 'I';
+    memory[0x3009] = '\n';
     while (running)
     {
         uint16_t instr = memory[reg[R_PC]];
@@ -256,6 +266,9 @@ int main()
             break;
             case (TRAP_OUT):
             {
+                char c = (char)reg[R_R0];
+                printf("%c", c);
+                fflush(stdout);
             }
             break;
             case (TRAP_PUTS):
